@@ -31,7 +31,7 @@ export const MapDisplayHeader: React.FC = () => {
                         animate={{ rotateX: 0 }}
                         exit={{ rotateX: 90 }}
                         transition={{ duration: 0.3 }}
-                        className="font-['Helvetica'] text-xl inline-block"
+                        className="font-['Helvetica'] text-5xl inline-block"
                         style={{ transformOrigin: "50% 50%" }}
                     >
                         {char}

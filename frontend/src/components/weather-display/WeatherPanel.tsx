@@ -76,49 +76,49 @@ export const WeatherPanel: React.FC = () => {
             {/* Current Weather */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
-                    <WeatherIcon condition="sunny" className="w-12 h-12" />
+                    <WeatherIcon condition="sunny" className="w-24 h-24" />
                     <div>
-                        <div className="text-3xl font-bold flex items-center gap-2">
+                        <div className="text-7xl font-bold flex items-center gap-2">
                             <div className="flex items-center">
                                 {Math.round(weatherData.current.temperature.celsius)}°
-                                <span className="text-sm text-zinc-400 ml-1">C</span>
+                                <span className="text-3xl text-zinc-400 ml-1">C</span>
                             </div>
                             <span className="text-zinc-500">/</span>
-                            <div className="flex items-center text-2xl text-zinc-400">
+                            <div className="flex items-center text-6xl text-zinc-400">
                                 {Math.round(weatherData.current.temperature.fahrenheit)}°
-                                <span className="text-sm ml-1">F</span>
+                                <span className="text-3xl ml-1">F</span>
                             </div>
-                            <IconTemperature className="w-6 h-6 ml-1" />
+                            <IconTemperature className="w-12 h-12 ml-1" />
                         </div>
-                        <div className="text-zinc-400 flex items-center gap-1">
-                            <IconWind className="w-4 h-4" />
+                        <div className="text-zinc-400 flex items-center gap-1 text-3xl">
+                            <IconWind className="w-8 h-8" />
                             {Math.round(weatherData.current.windSpeed)} mph
                         </div>
                     </div>
                 </div>
                 <div className="text-right text-zinc-400">
-                    <div>Updated</div>
-                    <div className="text-sm">{formatTime(weatherData.current.time)}</div>
+                    <div className="text-3xl">Updated</div>
+                    <div className="text-2xl">{formatTime(weatherData.current.time)}</div>
                 </div>
             </div>
 
             {/* Hourly Forecast */}
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 gap-4">
                 {weatherData.nextHours.map((hour, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1">
-                        <div className="text-sm text-zinc-400">{formatTime(hour.time)}</div>
-                        <WeatherIcon condition="sunny" />
-                        <div className="text-sm flex flex-col items-center">
+                    <div key={i} className="flex flex-col items-center gap-2">
+                        <div className="text-2xl text-zinc-400">{formatTime(hour.time)}</div>
+                        <WeatherIcon condition="sunny" className="w-16 h-16" />
+                        <div className="text-2xl flex flex-col items-center">
                             <div className="flex items-center">
                                 {Math.round(hour.temperature.celsius)}°
-                                <span className="text-xs text-zinc-400 ml-0.5">C</span>
+                                <span className="text-xl text-zinc-400 ml-0.5">C</span>
                             </div>
-                            <div className="flex items-center text-xs text-zinc-400">
+                            <div className="flex items-center text-xl text-zinc-400">
                                 {Math.round(hour.temperature.fahrenheit)}°
-                                <span className="text-xs ml-0.5">F</span>
+                                <span className="text-xl ml-0.5">F</span>
                             </div>
                         </div>
-                        <div className="text-xs text-zinc-500">{hour.humidity}%</div>
+                        <div className="text-xl text-zinc-500">{hour.humidity}%</div>
                     </div>
                 ))}
             </div>

@@ -24,7 +24,7 @@ export const StationBoard: React.FC<StationBoardProps> = ({ stationName, data, c
       className={`bg-black rounded-lg p-4 shadow-2xl overflow-hidden flex flex-col ${className}`}
     >
       <div className="mb-4">
-        <h2 className="text-2xl font-extrabold text-center font-['Helvetica'] tracking-tight">
+        <h2 className="text-8xl font-extrabold text-center font-['Helvetica'] tracking-tight">
           {stationName}
         </h2>
         <div className="mt-3 flex items-center gap-4">
