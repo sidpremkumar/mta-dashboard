@@ -1,0 +1,49 @@
+import type { Dayjs } from 'dayjs';
+import React from 'react';
+import { SubwayIcon } from '../common/SubwayIcon';
+import { ArrivalRow } from './ArrivalRow';
+
+interface TrainLineProps {
+  line: string;
+  data: {
+    uptown: { time: Dayjs }[];
+    downtown: { time: Dayjs }[];
+  };
+}
+
+export const TrainLine: React.FC<TrainLineProps> = ({ line, data }) => {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <SubwayIcon line={line} />
+        <h2 className="text-xl font-bold">Train Status</h2>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold text-gray-300">Uptown</h3>
+          {data.uptown.map((arrival, idx) => (
+            <ArrivalRow
+              key={idx}
+              time={arrival.time}
+              direction="uptown"
+              animate={{ delay: idx * 0.1 }}
+            />
+          ))}
+        </div>
+        
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold text-gray-300">Downtown</h3>
+          {data.downtown.map((arrival, idx) => (
+            <ArrivalRow
+              key={idx}
+              time={arrival.time}
+              direction="downtown"
+              animate={{ delay: idx * 0.1 }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}; 
