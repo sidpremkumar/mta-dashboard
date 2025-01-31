@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 // @ts-ignore
@@ -30,13 +30,13 @@ class _MTAClient {
      * @param stationId - The ID of the station to get departures for
      * @returns The departures for the given station ID
      */
-    async getUpcomingTrainTimes(args: { stationId: number, linePassed: 'M' | 'L' }): Promise<{ uptown: { time: Dayjs }[], downtown: { time: Dayjs }[] }> {
+    async getUpcomingTrainTimes(args: { stationId: number, linePassed: 'M' | 'L' | 'G' }): Promise<{ uptown: { time: Date }[], downtown: { time: Date }[] }> {
         const { stationId, linePassed } = args;
         // First get all the departures
         const departures = await this.getDepartures(stationId);
 
-        const northTrains: { time: Dayjs, routeId: string }[] = [];
-        const southTrains: { time: Dayjs, routeId: string }[] = [];
+        const northTrains: { time: Date, routeId: string }[] = [];
+        const southTrains: { time: Date, routeId: string }[] = [];
 
         for (const line of departures.lines) {
             // North direction
@@ -44,8 +44,7 @@ class _MTAClient {
                 for (const train of line.departures['N']) {
                     if (train.routeId === linePassed) {
                         // Convert Unix timestamp to EST
-                        const estTime = dayjs(train.time * 1000).tz('America/New_York');
-                        console.log(estTime.format()); // This will now print in EST
+                        const estTime = dayjs(train.time * 1000).tz('America/New_York').toDate();
                         northTrains.push({
                             time: estTime,
                             routeId: train.routeId
@@ -59,8 +58,7 @@ class _MTAClient {
                 for (const train of line.departures['S']) {
                     if (train.routeId === linePassed) {
                         // Convert Unix timestamp to EST
-                        const estTime = dayjs(train.time * 1000).tz('America/New_York');
-                        console.log(estTime.format()); // This will now print in EST
+                        const estTime = dayjs(train.time * 1000).tz('America/New_York').toDate();
                         southTrains.push({
                             time: estTime,
                             routeId: train.routeId
@@ -71,8 +69,8 @@ class _MTAClient {
         }
 
         // Sort trains by departure time
-        northTrains.sort((a, b) => a.time.diff(b.time));
-        southTrains.sort((a, b) => a.time.diff(b.time));
+        northTrains.sort((a, b) => a.time.getTime() - b.time.getTime());
+        southTrains.sort((a, b) => a.time.getTime() - b.time.getTime());
 
         return {
             'uptown': northTrains,

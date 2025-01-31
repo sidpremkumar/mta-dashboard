@@ -16,12 +16,12 @@ export const TrainLine: React.FC<TrainLineProps> = ({ line, data }) => {
     <div className="space-y-4">
       <div className="flex items-center gap-4">
         <SubwayIcon line={line} />
-        <h2 className="text-xl font-bold">Train Status</h2>
+        <h2 className="text-xl font-bold font-['Helvetica'] tracking-tight">Train Status</h2>
       </div>
       
       <div className="grid grid-cols-2 gap-6">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-300">Uptown</h3>
+          <h3 className="text-lg font-semibold text-gray-300 font-['Helvetica']">Uptown</h3>
           {data.uptown.map((arrival, idx) => (
             <ArrivalRow
               key={idx}
@@ -33,7 +33,7 @@ export const TrainLine: React.FC<TrainLineProps> = ({ line, data }) => {
         </div>
         
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-300">Downtown</h3>
+          <h3 className="text-lg font-semibold text-gray-300 font-['Helvetica']">Downtown</h3>
           {data.downtown.map((arrival, idx) => (
             <ArrivalRow
               key={idx}
