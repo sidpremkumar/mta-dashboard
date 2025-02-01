@@ -12,8 +12,19 @@ interface HourlyWeather {
 }
 
 interface WeatherResponse {
-    current: CurrentWeather;
-    hourly: HourlyWeather;
+    current: {
+        temperature_2m: number;
+        wind_speed_10m: number;
+        weather_code: number;
+        time: string;
+    };
+    hourly: {
+        time: string[];
+        temperature_2m: number[];
+        relative_humidity_2m: number[];
+        wind_speed_10m: number[];
+        weather_code: number[];
+    };
 }
 
 interface FormattedWeatherData {
@@ -23,9 +34,10 @@ interface FormattedWeatherData {
             fahrenheit: number;
         };
         windSpeed: number;
+        weatherCode: number;
         time: string;
     };
-    nextHours: Array<{
+    nextHours: {
         time: string;
         temperature: {
             celsius: number;
@@ -33,7 +45,8 @@ interface FormattedWeatherData {
         };
         windSpeed: number;
         humidity: number;
-    }>;
+        weatherCode: number;
+    }[];
 }
 
 const celsiusToFahrenheit = (celsius: number): number => {
@@ -59,7 +72,7 @@ async function getCurrentWeatherData(): Promise<FormattedWeatherData> {
     const LNG = -73.950925;
 
     const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LNG}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=America/New_York`
+        `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LNG}&current=temperature_2m,wind_speed_10m,weather_code&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=America/New_York`
     );
     const data: WeatherResponse = await response.json();
 
@@ -70,6 +83,7 @@ async function getCurrentWeatherData(): Promise<FormattedWeatherData> {
             fahrenheit: celsiusToFahrenheit(data.current.temperature_2m)
         },
         windSpeed: data.current.wind_speed_10m,
+        weatherCode: data.current.weather_code,
         time: convertToEST(data.current.time),
     };
 
@@ -88,6 +102,7 @@ async function getCurrentWeatherData(): Promise<FormattedWeatherData> {
             },
             windSpeed: data.hourly.wind_speed_10m[currentTimeIndex + index],
             humidity: data.hourly.relative_humidity_2m[currentTimeIndex + index],
+            weatherCode: data.hourly.weather_code[currentTimeIndex + index],
         }));
 
     return {

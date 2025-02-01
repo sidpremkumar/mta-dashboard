@@ -1,4 +1,4 @@
-import { IconCloud, IconCloudRain, IconSun, IconTemperature, IconWind } from '@tabler/icons-react';
+import { IconCloud, IconCloudRain, IconCloudSnow, IconCloudStorm, IconSun, IconTemperature, IconWind } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import getCurrentWeatherData from '../../tools/getCurrentWeatherData';
@@ -11,6 +11,7 @@ interface WeatherData {
         };
         windSpeed: number;
         time: string;
+        weatherCode: number;
     };
     nextHours: Array<{
         time: string;
@@ -20,8 +21,19 @@ interface WeatherData {
         };
         windSpeed: number;
         humidity: number;
+        weatherCode: number;
     }>;
 }
+
+const getWeatherCondition = (code: number): string => {
+    if (code === 0) return 'sunny';
+    if ([1, 2, 3].includes(code)) return 'cloudy';
+    if ([45, 48].includes(code)) return 'fog';
+    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'rain';
+    if ([71, 73, 75, 77, 85, 86].includes(code)) return 'snow';
+    if ([95, 96, 99].includes(code)) return 'thunder';
+    return 'sunny'; // default fallback
+};
 
 const WeatherIcon: React.FC<{ condition: string; className?: string }> = ({ condition, className = "w-6 h-6" }) => {
     switch (condition.toLowerCase()) {
@@ -31,6 +43,12 @@ const WeatherIcon: React.FC<{ condition: string; className?: string }> = ({ cond
             return <IconCloud className={className} />;
         case 'sunny':
             return <IconSun className={className} />;
+        case 'fog':
+            return <IconCloud className={className} />;
+        case 'snow':
+            return <IconCloudSnow className={className} />;
+        case 'thunder':
+            return <IconCloudStorm className={className} />;
         default:
             return <IconSun className={className} />;
     }
@@ -76,7 +94,10 @@ export const WeatherPanel: React.FC = () => {
             {/* Current Weather */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
-                    <WeatherIcon condition="sunny" className="w-24 h-24" />
+                    <WeatherIcon
+                        condition={getWeatherCondition(weatherData.current.weatherCode)}
+                        className="w-24 h-24"
+                    />
                     <div>
                         <div className="text-7xl font-bold flex items-center gap-2">
                             <div className="flex items-center">
@@ -107,7 +128,10 @@ export const WeatherPanel: React.FC = () => {
                 {weatherData.nextHours.map((hour, i) => (
                     <div key={i} className="flex flex-col items-center gap-2">
                         <div className="text-2xl text-zinc-400">{formatTime(hour.time)}</div>
-                        <WeatherIcon condition="sunny" className="w-16 h-16" />
+                        <WeatherIcon
+                            condition={getWeatherCondition(hour.weatherCode)}
+                            className="w-16 h-16"
+                        />
                         <div className="text-2xl flex flex-col items-center">
                             <div className="flex items-center">
                                 {Math.round(hour.temperature.celsius)}°
@@ -118,7 +142,7 @@ export const WeatherPanel: React.FC = () => {
                                 <span className="text-xl ml-0.5">F</span>
                             </div>
                         </div>
-                        <div className="text-xl text-zinc-500">{hour.humidity}%</div>
+
                     </div>
                 ))}
             </div>

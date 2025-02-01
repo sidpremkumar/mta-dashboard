@@ -21,8 +21,8 @@ export const TrainLine: React.FC<TrainLineProps> = ({ line, data }) => {
 
             <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <h3 className="text-5xl font-semibold text-gray-300 font-['Helvetica']">Uptown</h3>
-                    {data.uptown.map((arrival, idx) => (
+                    <h3 className="text-5xl font-semibold text-gray-300 font-['Helvetica']">North</h3>
+                    {data.uptown.slice(0, 3).map((arrival, idx) => (
                         <ArrivalRow
                             key={idx}
                             time={arrival.time}
@@ -33,8 +33,8 @@ export const TrainLine: React.FC<TrainLineProps> = ({ line, data }) => {
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="text-5xl font-semibold text-gray-300 font-['Helvetica']">Downtown</h3>
-                    {data.downtown.map((arrival, idx) => (
+                    <h3 className="text-5xl font-semibold text-gray-300 font-['Helvetica']">South</h3>
+                    {data.downtown.slice(0, 3).map((arrival, idx) => (
                         <ArrivalRow
                             key={idx}
                             time={arrival.time}

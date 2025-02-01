@@ -17,7 +17,7 @@ interface SubwayBoardProps {
   isLoading?: boolean;
 }
 
-const AnimatePresenceFixedType = AnimatePresence as ElementType;
+export const AnimatePresenceFixedType = AnimatePresence as ElementType;
 
 export const SubwayBoard: React.FC<SubwayBoardProps> = ({ trainData, isLoading }) => {
   return (

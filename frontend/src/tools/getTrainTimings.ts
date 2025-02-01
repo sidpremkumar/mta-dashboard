@@ -39,8 +39,8 @@ const getTrainTimings = async (): Promise<{ [key: string]: { [key: string]: Stat
                 const data = await response.json();
                 // Convert time strings to dayjs objects
                 return {
-                    uptown: data.uptown.map((t: any) => ({ ...t, time: dayjs(t.time) })).slice(0, 3),
-                    downtown: data.downtown.map((t: any) => ({ ...t, time: dayjs(t.time) })).slice(0, 3)
+                    uptown: data.uptown.map((t: any) => ({ ...t, time: dayjs(t.time) })),
+                    downtown: data.downtown.map((t: any) => ({ ...t, time: dayjs(t.time) }))
                 };
             } catch (error) {
                 console.error(`Error fetching train times for ${line} line:`, error);
